@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Created with Hot Potatoes by Half-Baked Software, registered to khadija abelkhir."/>
+    <title>Choisir la bonne réponse - SVT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           VARIABLES DE COULEURS & THÈME VISUEL (Spécial Élèves)
+           ========================================================================== */
+        :root {
+            --primary: #4f46e5;         /* Violet/Indigo moderne */
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --secondary: #0ea5e9;       /* Bleu azur */
+            --secondary-light: #e0f2fe;
+            
+            /* Couleurs de validation */
+            --success-bg: #dcfce7;      /* Fond vert clair */
+            --success-border: #22c55e;  /* Bordure verte */
+            --success-text: #15803d;    /* Texte vert foncé */
+            
+            --error-bg: #fee2e2;        /* Fond rouge clair */
+            --error-border: #ef4444;    /* Bordure rouge */
+            --error-text: #b91c1c;      /* Texte rouge foncé */
+            
+            --bg-gradient-start: #eff6ff; 
+            --bg-gradient-end: #f5f3ff;   
+            --card-bg: #ffffff;
+            
+            --text-main: #1e1b4b;       
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-md: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+            --font-main: 'Plus Jakarta Sans', Geneva, Arial, sans-serif;
+        }
+
+        /* ==========================================================================
+           RESET & RESTRUCTURATION DU LAYOUT
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           BARRES DE NAVIGATION INTERACTIVES
+           ========================================================================== */
+        .NavButtonBar {
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .NavButton {
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--primary-light);
+            padding: 0.6rem 1.4rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .NavButton:hover {
+            background: var(--primary);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
+           EN-TÊTE DU QUESTIONNAIRE & BARRE DE PROGRESSION
+           ========================================================================== */
+        .Titles {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .ExerciseTitle {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .ExerciseSubtitle {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            background: var(--primary-light);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .ProgressBarContainer {
+            width: 100%;
+            max-width: 750px;
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .ProgressBar {
+            height: 100%;
+            background: var(--primary);
+            width: 20%;
+        }
+
+        /* ==========================================================================
+           ZONE D'EXERCICE ET CARTES DE QUESTIONS
+           ========================================================================== */
+        #ContainerDiv {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        ol.QuizQuestions {
+            list-style: none;
+        }
+
+        ol.QuizQuestions > li {
+            display: none; 
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        ol.QuizQuestions > li.active-question {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .QuestionText {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .QuestionText::before {
+            content: "🧬";
+            font-size: 1.3rem;
+        }
+
+        /* ==========================================================================
+           OPTIONS DE RÉPONSES ET CLASSES DE COULEURS DYNAMIQUES
+           ========================================================================== */
+        ol.MCAnswers {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        ol.MCAnswers li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.2rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        ol.MCAnswers li:hover:not(.correct-answer):not(.wrong-answer) {
+            background: #f0fdf4; 
+            border-color: #bbf7d0;
+            transform: translateX(5px);
+        }
+
+        /* --- Style Réponse CORRECTE (VERT) --- */
+        ol.MCAnswers li.correct-answer {
+            background: var(--success-bg) !important;
+            border-color: var(--success-border) !important;
+            color: var(--success-text) !important;
+            font-weight: 600;
+            transform: none !important;
+            cursor: default;
+        }
+
+        ol.MCAnswers li.correct-answer button.FuncButton {
+            background: var(--success-border) !important;
+            color: #ffffff !important;
+        }
+
+        /* --- Style Réponse FAUSSE (ROUGE) --- */
+        ol.MCAnswers li.wrong-answer {
+            background: var(--error-bg) !important;
+            border-color: var(--error-border) !important;
+            color: var(--error-text) !important;
+            transform: none !important;
+            cursor: default;
+        }
+
+        ol.MCAnswers li.wrong-answer button.FuncButton {
+            background: var(--error-border) !important;
+            color: #ffffff !important;
+        }
+
+        /* Bouton d'interrogation (?) par défaut */
+        ol.MCAnswers button.FuncButton {
+            min-width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--secondary-light);
+            color: var(--secondary);
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================================================
+           BOUTONS DE NAVIGATION ENTRE LES QUESTIONS
+           ========================================================================== */
+        .QuizNavigationButtons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            gap: 1rem;
+        }
+
+        .QuizNavBtn {
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            border: none;
+        }
+
+        .QuizNavBtn.prev {
+            background: #e2e8f0;
+            color: var(--text-muted);
+        }
+
+        .QuizNavBtn.prev:hover:not(:disabled) {
+            background: #cbd5e1;
+        }
+
+        .QuizNavBtn.next {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .QuizNavBtn.next:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .QuizNavBtn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+           MODALE DE FEEDBACK
+           ========================================================================== */
+        div.Feedback {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid var(--primary-light);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.25);
+            padding: 2.5rem 2rem;
+            width: 90%;
+            max-width: 450px;
+            position: fixed !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            z-index: 9999;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .FeedbackText {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        #FeedbackOKButton {
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.5rem; }
+            ol.QuizQuestions > li { padding: 1.25rem; }
+            ol.MCAnswers li { font-size: 0.95rem; }
+        }
+    </style>
+
+    <script>
+        //<![CDATA[
+        var API = null;
+        function findAPI(win) { while ((win.API == null) && (win.parent != null) && (win.parent != win)) { win = win.parent; } API = win.API; }
+        function initAPI(win) { findAPI(win); if ((API == null) && (win.opener != null)) { findAPI(win.opener); } }
+        var ScormSubmitted = false;
+        function ScormStartUp(){ initAPI(window); if (API != null){ API.LMSInitialize(''); API.LMSSetValue('cmi.core.lesson_status', 'browsed'); API.LMSSetValue('cmi.core.score.min', 0); API.LMSSetValue('cmi.core.score.max', 100); API.LMSCommit(''); } }
+        function CheckLMSFinish(){ if (API != null){ if (ScormSubmitted == false){ API.LMSCommit(''); API.LMSFinish(''); ScormSubmitted = true; } } }
+        function SetScormIncomplete(){ if (ScormSubmitted == true){ return; } SetScormScore(); if (API != null){ API.LMSSetValue('cmi.core.lesson_status', 'incomplete'); API.LMSSetValue('cmi.core.session_time', MillisecondsToTime((new Date()).getTime() - ScormStartTime)); API.LMSCommit(''); } }
+        function SetScormComplete(){ if (API != null){ API.LMSSetValue('cmi.core.session_time', MillisecondsToTime((new Date()).getTime() - ScormStartTime)); API.LMSSetValue('cmi.core.lesson_status', 'completed'); SetScormScore(); API.LMSCommit(''); API.LMSFinish(''); ScormSubmitted = true; } }
+        var ScormStartTime = (new Date()).getTime();
+        function SetScormTimedOut(){ if (API != null){ if (ScormSubmitted == false){ SetScormScore(); API.LMSSetValue('cmi.core.exit', 'time-out'); API.LMSCommit(''); CheckLMSFinish(); } } }
+        function MillisecondsToTime(Seconds){ Seconds = Math.round(Seconds/1000); var S = Seconds % 60; Seconds -= S; if (S < 10){S = '0' + S;} var M = (Seconds / 60) % 60; if (M < 10){M = '0' + M;} var H = Math.floor(Seconds / 3600); if (H < 10){H = '0' + H;} return H + ':' + M + ':' + S; }
+        var topZ = 1000;
+        function ShowMessage(Feedback){ var Output = Feedback + '<br /><br />'; document.getElementById('FeedbackContent').innerHTML = Output; var FDiv = document.getElementById('FeedbackDiv'); topZ++; FDiv.style.zIndex = topZ; FDiv.style.display = 'block'; setTimeout("document.getElementById('FeedbackOKButton').focus()", 50); }
+        function HideFeedback(){ document.getElementById('FeedbackDiv').style.display = 'none'; }
+        var CaseSensitive = false; var YourScoreIs = 'Votre score est :'; var Finished = false; var Locked = false; var Score = 0;
+        function StateObject(){ this.CheckedAnswers = new Array(); this.CheckCount = 0; this.Score = 0; this.Completed = false; }
+        
+        var Qs = new Array();
+        Qs[0] = new StateObject(); Qs[0].Answers = new Array(new Array('&#x2718;','Faux',0,0),new Array('&#x2714;','Vrai',1,100)); Qs[0].Weight = 1;
+        Qs[1] = new StateObject(); Qs[1].Answers = new Array(new Array('&#x2714;','La rougeur',1,100),new Array('&#x2718;','La sécrétion d’anticorps',0,0),new Array('&#x2718;','La cicatrisation',0,0)); Qs[1].Weight = 1;
+        Qs[2] = new StateObject(); Qs[2].Answers = new Array(new Array('&#x2718;','Lymphocytes',0,0),new Array('&#x2718;','Hématies',0,0),new Array('&#x2714;','Phagocytes',1,100)); Qs[2].Weight = 1;
+        Qs[3] = new StateObject(); Qs[3].Answers = new Array(new Array('&#x2718;','La diapédèse',0,0),new Array('&#x2714;','La phagocytose',1,100),new Array('&#x2718;','La lyse cellulaire',0,0)); Qs[3].Weight = 1;
+        Qs[4] = new StateObject(); Qs[4].Answers = new Array(new Array('&#x2714;','Passage du plasma',1,100),new Array('&#x2718;','Manque d’oxygène',0,0),new Array('&#x2718;','Perte de sang',0,0)); Qs[4].Weight = 1;
+        
+        var currentQuestionIndex = 0;
+
+        function updateQuestionVisibility() {
+            var questions = document.querySelectorAll('.QuizQuestions > li');
+            questions.forEach(function(q, index) {
+                if(index === currentQuestionIndex) {
+                    q.classList.add('active-question');
+                } else {
+                    q.classList.remove('active-question');
+                }
+            });
+            document.getElementById('prevQuestionBtn').disabled = (currentQuestionIndex === 0);
+            document.getElementById('nextQuestionBtn').disabled = (currentQuestionIndex === questions.length - 1);
+            
+            var progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('internalBar').style.width = progressPercent + '%';
+        }
+
+        function nextQuestion() {
+            var questions = document.querySelectorAll('.QuizQuestions > li');
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                updateQuestionVisibility();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestionVisibility();
+            }
+        }
+
+        function StartUp(){ 
+            ScormStartUp(); 
+            updateQuestionVisibility();
+        }
+        
+        function CheckMCAnswer(QNum, ANum, Btn){ 
+            if (Qs[QNum].Completed == true){return;} 
+            if (Qs[QNum].CheckedAnswers[ANum] == 1){return;} 
+            Qs[QNum].CheckedAnswers[ANum] = 1; 
+            Qs[QNum].CheckCount++; 
+            
+            var Ans = Qs[QNum].Answers[ANum]; 
+            var Feedback = Ans[1]; 
+            var IsCorrect = Ans[2]; 
+            
+            var parentLi = Btn.parentNode;
+            
+            if (IsCorrect == 1){ 
+                Qs[QNum].Completed = true; 
+                var QScore = 0; 
+                if (Qs[QNum].CheckCount == 1){ QScore = Qs[QNum].Weight; } else { QScore = Qs[QNum].Weight / Qs[QNum].CheckCount; } 
+                Qs[QNum].Score = QScore; 
+                Btn.innerHTML = '&#x2714;'; 
+                
+                parentLi.classList.add('correct-answer');
+            } else { 
+                Btn.innerHTML = '&#x2718;'; 
+                parentLi.classList.add('wrong-answer');
+                
+                // --- APPARITION AUTOMATIQUE DE LA BONNE RÉPONSE ---
+                // On cherche parmi les réponses de cette question celle qui est correcte (IsCorrect == 1)
+                var currentQuestionContainer = document.getElementById('Q_' + QNum);
+                var alternativeButtons = currentQuestionContainer.querySelectorAll('.FuncButton');
+                
+                for (var i = 0; i < Qs[QNum].Answers.length; i++) {
+                    if (Qs[QNum].Answers[i][2] == 1) { // Trouver l'index de la bonne réponse
+                        var correctBtn = alternativeButtons[i];
+                        if (correctBtn) {
+                            correctBtn.innerHTML = '&#x2714;';
+                            correctBtn.parentNode.classList.add('correct-answer');
+                        }
+                    }
+                }
+            } 
+            
+            ShowMessage(Feedback); 
+            var AllDone = true; 
+            for (var i=0; i<Qs.length; i++){ if (Qs[i].Completed == false){ AllDone = false; } } 
+            if (AllDone == true){ 
+                var TotalWeight = 0; var TotalScore = 0; 
+                for (i=0; i<Qs.length; i++){ TotalWeight += Qs[i].Weight; TotalScore += Qs[i].Score; } 
+                Score = Math.floor((100 * TotalScore) / TotalWeight); 
+                var Output = YourScoreIs + ' ' + Score + '%.'; 
+                ShowMessage(Output); 
+                SetScormComplete(); 
+            } else { 
+                SetScormIncomplete(); 
+            } 
+        }
+        
+        function SetScormScore(){ if (API != null){ API.LMSSetValue('cmi.core.score.raw', Score); API.LMSCommit(''); } }
+        //]]>
+    </script>
+</head>
+
+<body onload="StartUp()" id="TheBody" onunload="CheckLMSFinish()">
+
+    <div class="NavButtonBar" id="TopNavBar">
+        <button class="NavButton" onclick="location='contents.htm'; return false;">Index</button>
+        <button class="NavButton" onclick="location='/#quiz'; return false;">Suivant &rArr;</button>
+    </div>
+
+    <div class="Titles">
+        <h2 class="ExerciseTitle">Choisir la bonne réponse</h2>
+        <h3 class="ExerciseSubtitle">SVT — La Réaction Inflammatoire</h3>
+    </div>
+
+    <div class="ProgressBarContainer">
+        <div class="ProgressBar" id="internalBar"></div>
+    </div>
+
+    <div id="ContainerDiv">
+        <div class="ExerciseContainer">
+            <ol class="QuizQuestions">
+                
+                <li id="Q_0">
+                    <div class="QuestionText">La réaction inflammatoire est une réponse immunitaire innée</div>
+                    <ol class="MCAnswers">
+                        <li id="Q_0_0" onclick="document.getElementById('Q_0_0_Btn').click();">
+                            <button class="FuncButton" id="Q_0_0_Btn" onclick="CheckMCAnswer(0,0,this); event.stopPropagation();">?</button>Faux
+                        </li>
+                        <li id="Q_0_1" onclick="document.getElementById('Q_0_1_Btn').click();">
+                            <button class="FuncButton" id="Q_0_1_Btn" onclick="CheckMCAnswer(0,1,this); event.stopPropagation();">?</button>Vrai
+                        </li>
+                    </ol>
+                </li>
+
+                <li id="Q_1">
+                    <div class="QuestionText">Parmi les symptômes de l’inflammation on trouve</div>
+                    <ol class="MCAnswers">
+                        <li id="Q_1_0" onclick="document.getElementById('Q_1_0_Btn').click();">
+                            <button class="FuncButton" id="Q_1_0_Btn" onclick="CheckMCAnswer(1,0,this); event.stopPropagation();">?</button>La rougeur
+                        </li>
+                        <li id="Q_1_1" onclick="document.getElementById('Q_1_1_Btn').click();">
+                            <button class="FuncButton" id="Q_1_1_Btn" onclick="CheckMCAnswer(1,1,this); event.stopPropagation();">?</button>La sécrétion d’anticorps
+                        </li>
+                        <li id="Q_1_2" onclick="document.getElementById('Q_1_2_Btn').click();">
+                            <button class="FuncButton" id="Q_1_2_Btn" onclick="CheckMCAnswer(1,2,this); event.stopPropagation();">?</button>La cicatrisation
+                        </li>
+                    </ol>
+                </li>
+
+                <li id="Q_2">
+                    <div class="QuestionText">Les cellules qui exécutent la phagocytose sont des</div>
+                    <ol class="MCAnswers">
+                        <li id="Q_2_0" onclick="document.getElementById('Q_2_0_Btn').click();">
+                            <button class="FuncButton" id="Q_2_0_Btn" onclick="CheckMCAnswer(2,0,this); event.stopPropagation();">?</button>Lymphocytes
+                        </li>
+                        <li id="Q_2_1" onclick="document.getElementById('Q_2_1_Btn').click();">
+                            <button class="FuncButton" id="Q_2_1_Btn" onclick="CheckMCAnswer(2,1,this); event.stopPropagation();">?</button>Hématies
+                        </li>
+                        <li id="Q_2_2" onclick="document.getElementById('Q_2_2_Btn').click();">
+                            <button class="FuncButton" id="Q_2_2_Btn" onclick="CheckMCAnswer(2,2,this); event.stopPropagation();">?</button>Phagocytes
+                        </li>
+                    </ol>
+                </li>
+
+                <li id="Q_3">
+                    <div class="QuestionText">Le mécanisme par lequel le phagocyte englobe l'élément étranger est</div>
+                    <ol class="MCAnswers">
+                        <li id="Q_3_0" onclick="document.getElementById('Q_3_0_Btn').click();">
+                            <button class="FuncButton" id="Q_3_0_Btn" onclick="CheckMCAnswer(3,0,this); event.stopPropagation();">?</button>La diapédèse
+                        </li>
+                        <li id="Q_3_1" onclick="document.getElementById('Q_3_1_Btn').click();">
+                            <button class="FuncButton" id="Q_3_1_Btn" onclick="CheckMCAnswer(3,1,this); event.stopPropagation();">?</button>La phagocytose
+                        </li>
+                        <li id="Q_3_2" onclick="document.getElementById('Q_3_2_Btn').click();">
+                            <button class="FuncButton" id="Q_3_2_Btn" onclick="CheckMCAnswer(3,2,this); event.stopPropagation();">?</button>La lyse cellulaire
+                        </li>
+                    </ol>
+                </li>
+
+                <li id="Q_4">
+                    <div class="QuestionText">Le gonflement est causé par</div>
+                    <ol class="MCAnswers">
+                        <li id="Q_4_0" onclick="document.getElementById('Q_4_0_Btn').click();">
+                            <button class="FuncButton" id="Q_4_0_Btn" onclick="CheckMCAnswer(4,0,this); event.stopPropagation();">?</button>Passage du plasma
+                        </li>
+                        <li id="Q_4_1" onclick="document.getElementById('Q_4_1_Btn').click();">
+                            <button class="FuncButton" id="Q_4_1_Btn" onclick="CheckMCAnswer(4,1,this); event.stopPropagation();">?</button>Manque d’oxygène
+                        </li>
+                        <li id="Q_4_2" onclick="document.getElementById('Q_4_2_Btn').click();">
+                            <button class="FuncButton" id="Q_4_2_Btn" onclick="CheckMCAnswer(4,2,this); event.stopPropagation();">?</button>Perte de sang
+                        </li>
+                    </ol>
+                </li>
+
+            </ol>
+
+            <div class="QuizNavigationButtons">
+                <button id="prevQuestionBtn" class="QuizNavBtn prev" onclick="prevQuestion()">&lArr; Précédent</button>
+                <button id="nextQuestionBtn" class="QuizNavBtn next" onclick="nextQuestion()">Suivant &rArr;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="Feedback" id="FeedbackDiv" style="display: none;">
+        <div class="FeedbackText" id="FeedbackContent"></div>
+        <button id="FeedbackOKButton" class="FuncButton" onclick="HideFeedback(); return false;">Continuer</button>
+    </div>
+
+    <div class="NavButtonBar" id="BottomNavBar" style="margin-top: 2rem;">
+        <button class="NavButton" onclick="location='contents.htm'; return false;">Index</button>
+        <button class="NavButton" onclick="location='/#quiz'; return false;">Suivant &rArr;</button>
+    </div>
+
+</body>
+</html>

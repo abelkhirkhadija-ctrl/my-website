@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVT School - Plateforme Éducative</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="main-header">
+  <div class="logo" id="logoHome" style="cursor: pointer;">
+    <i class="fa-solid fa-graduation-cap"></i> SVT School
+  </div>
+
+  <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <nav class="navbar" id="navbar">
+    <ul>
+      <li><a href="#home" class="nav-link active" data-target="home"><i class="fa-solid fa-house"></i> Accueil</a></li>
+      <li><a href="#videos" class="nav-link" data-target="videos"><i class="fa-solid fa-video"></i> Vidéos</a></li>
+      <li><a href="#cours" class="nav-link" data-target="cours"><i class="fa-solid fa-file-pdf"></i> Cours</a></li>
+      <li><a href="#quiz" class="nav-link" data-target="quiz"><i class="fa-solid fa-brain"></i> Quiz</a></li>
+      <li><a href="#contact" class="nav-link" data-target="contact"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="pages-container">
+
+  <section id="home" class="page-view active-view hero-fullscreen">
+    <div class="hero-center-box">
+      <h1>Bienvenue sur <span class="brand-highlight">SVT School</span></h1>
+      <p class="hero-description">
+        منصة تعليمية لمساعدة التلاميذ في مادة SVT عبر فيديوهات، PDF و Quiz بطريقة سهلة وممتعة.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary page-trigger" data-target="videos"><i class="fa-solid fa-circle-play"></i> Vidéos</button>
+        <button class="btn btn-secondary page-trigger" data-target="cours"><i class="fa-solid fa-file-arrow-down"></i> Cours PDF</button>
+        <button class="btn btn-accent page-trigger" data-target="quiz"><i class="fa-solid fa-lightbulb"></i> Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="videos" class="page-view">
+    <div class="container">
+      <button class="btn-back back-to-home"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+      
+      <div class="section-header">
+        <h2><i class="fa-solid fa-video text-emerald"></i> Vidéos éducatives</h2>
+        <p class="section-subtitle">Visionnez les explications détaillées des chapitres</p>
+      </div>
+
+      <div class="videos-grid">
+        <div class="video-card">
+          <div class="video-wrapper">
+            <video controls preload="metadata">
+              <source src="videos/systeme_immunitaire.mp4" type="video/mp4">
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          </div>
+          <div class="video-info">
+            <span class="badge badge-emerald">Immunité</span>
+            <h3>Leçon 1 : Le Système Immunitaire</h3>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-wrapper">
+            <video controls preload="metadata">
+              <source src="videos/video2.mp4" type="video/mp4">
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          </div>
+          <div class="video-info">
+            <span class="badge badge-purple">Microbes</span>
+            <h3>Leçon 2 : Le monde des microbes</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cours" class="page-view">
+    <div class="container">
+      <button class="btn-back back-to-home"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+
+      <div class="section-header">
+        <h2><i class="fa-solid fa-file-pdf text-blue"></i> Cours PDF</h2>
+        <p class="section-subtitle">Téléchargez vos supports de cours pour réviser partout</p>
+      </div>
+
+      <div class="pdf-grid">
+        <a href="pdfs/systeme_immunitaire.pdf" download class="pdf-card border-blue">
+          <div class="pdf-icon-box bg-blue-light">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <div class="pdf-details">
+            <h3>Cours 1 - Système immunitaire</h3>
+            <span class="download-text"><i class="fa-solid fa-download"></i> Télécharger le document</span>
+          </div>
+        </a>
+
+        <a href="pdfs/cours2.pdf" download class="pdf-card border-purple">
+          <div class="pdf-icon-box bg-purple-light">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <div class="pdf-details">
+            <h3>Cours 2 - Les Microbes</h3>
+            <span class="download-text"><i class="fa-solid fa-download"></i> Télécharger le document</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz" class="page-view">
+    <div class="container">
+      <button class="btn-back back-to-home"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+
+      <div class="section-header">
+        <h2><i class="fa-solid fa-brain text-amber"></i> Quiz interactifs</h2>
+        <p class="section-subtitle">Évaluez vos connaissances et progressez à votre rythme</p>
+      </div>
+
+      <div class="quiz-container">
+        <div class="quiz-category-box">
+          <button class="quiz-toggle-btn" aria-expanded="false">
+            <span class="title-side"><i class="fa-solid fa-shield-halved text-emerald"></i> 🛡️ Le système immunitaire</span>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+          </button>
+          <div class="quiz-collapse-content">
+            <div class="quiz-links-inner">
+              <a href="quiz/systeme_immunitaire/Quiz1.htm" class="quiz-link-item">
+                <span class="quiz-number">01</span> Quiz Général 1 <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+              <a href="quiz/systeme_immunitaire/Quiz2.htm" class="quiz-link-item">
+                <span class="quiz-number">02</span> Quiz Approfondi 2 <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+              <a href="quiz/systeme_immunitaire/Quiz3.htm" class="quiz-link-item">
+                <span class="quiz-number">03</span> Quiz Bilan 3 <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-category-box">
+          <button class="quiz-toggle-btn" aria-expanded="false">
+            <span class="title-side"><i class="fa-solid fa-virus text-purple"></i> 🦠 Les Microbes</span>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+          </button>
+          <div class="quiz-collapse-content">
+            <div class="quiz-links-inner">
+              <a href="quiz/microbes/Quiz1.htm" class="quiz-link-item">
+                <span class="quiz-number">01</span> Quiz d'évaluation 1 <i class="fa-solid fa-arrow-right-long"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="page-view">
+    <div class="container">
+      <button class="btn-back back-to-home"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</button>
+
+      <div class="section-header">
+        <h2><i class="fa-solid fa-envelope text-violet"></i> Contact & Réseaux</h2>
+        <p class="section-subtitle">Une question ? Rejoignez-nous sur nos différents canaux</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-social-card card-instagram">
+          <div class="social-icon-wrapper"><i class="fab fa-instagram"></i></div>
+          <h3>Instagram</h3>
+          <p>Suivez nos actualités au quotidien</p>
+          <a href="https://instagram.com/abelkhir_khadija" target="_blank" class="social-link-btn">Visiter</a>
+        </div>
+
+        <div class="contact-social-card card-youtube">
+          <div class="social-icon-wrapper"><i class="fab fa-youtube"></i></div>
+          <h3>YouTube</h3>
+          <p>Abonnez-vous pour ne rater aucune leçon</p>
+          <a href="https://youtube.com/@khadijaabelkhir6310" target="_blank" class="social-link-btn">Chaîne</a>
+        </div>
+
+        <div class="contact-social-card card-whatsapp">
+          <div class="social-icon-wrapper"><i class="fab fa-whatsapp"></i></div>
+          <h3>WhatsApp</h3>
+          <p>Discutons directement par message</p>
+          <a href="https://api.whatsapp.com/send?phone=212653478272" target="_blank" class="social-link-btn">Message</a>
+        </div>
+      </div>
+
+      <div class="contact-footer-box">
+        <div class="info-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>06 53 47 82 72</span>
+        </div>
+        <div class="info-item">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span>abelkhirkhadija@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="main-footer">
+  <p>© 2026 SVT School - Tous droits réservés</p>
+  <p class="footer-subtext">Conçu avec passion pour la réussite des élèves.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
